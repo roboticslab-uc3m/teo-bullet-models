@@ -19,6 +19,7 @@ cd
 mkdir -p repos && cd repos
 git clone https://gitlab.com/libeigen/eigen.git
 cd eigen
+mkdir build_dir
 cd build_dir
 cmake ..
 sudo make install
@@ -35,6 +36,7 @@ cd
 mkdir -p repos && cd repos
 git clone https://github.com/pybind/pybind11.git
 cd pybind
+mkdir build
 cd build
 cmake ..
 sudo make install
