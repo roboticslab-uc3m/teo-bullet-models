@@ -21,13 +21,14 @@ RENDER_HEIGHT = 720
 RENDER_WIDTH = 960
 
 
+
 class TeoGymEnv(gym.Env):
   metadata = {'render.modes': ['human', 'rgb_array'], 'video.frames_per_second': 30}
   def __init__(self,
                urdfRoot=os.path.join(parentdir,"models"),
                actionRepeat=1,
                isEnableSelfCollision=True,
-               renders=True,
+               renders=False,
                isDiscrete=False,
                maxSteps=1000):
 
@@ -44,8 +45,8 @@ class TeoGymEnv(gym.Env):
     self.terminated = 0
 
     # Camera parameters to render view
-    self._cam_dist = 1.3
-    self._cam_yaw = 180
+    self._cam_dist = 2
+    self._cam_yaw = 30
     self._cam_pitch = -40
 
 
@@ -58,7 +59,6 @@ class TeoGymEnv(gym.Env):
       p.connect(p.DIRECT)
 
     p.setAdditionalSearchPath(pybullet_data.getDataPath())
-
 
     # Setup the models in the simulation
     self.seed()
@@ -90,7 +90,15 @@ class TeoGymEnv(gym.Env):
 
   def reset(self):
     self.terminated = 0
-    p.resetSimulation()
+    try:
+      p.resetSimulation()
+    except p.error:
+      if self._renders:
+        p.connect(p.GUI)
+        p.setAdditionalSearchPath(pybullet_data.getDataPath())
+      else:
+        p.connect(p.DIRECT)
+        p.setAdditionalSearchPath(pybullet_data.getDataPath())
     p.setPhysicsEngineParameter(numSolverIterations=150)
     p.setTimeStep(self._timeStep)
     p.setGravity(0, 0, -10)

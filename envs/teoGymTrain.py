@@ -15,22 +15,20 @@ import time
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common.vec_env import SubprocVecEnv
 from stable_baselines.common.cmd_util import make_vec_env
-from stable_baselines.common.evaluation import evaluate_policy
 from stable_baselines import PPO2
 
 
 def main():
-  environment =  TeoGymEnv(renders=False, isDiscrete=False)
-  env = SubprocVecEnv([lambda: environment])
-  # Load the trained agent
-  model = PPO2.load("Mlp_PP02_walking", env = env)
 
-  # Enjoy trained agent
-  obs = env.reset()
-  for i in range(1000):
-    action, _states = model.predict(obs)
-    obs, rewards, dones, info = env.step(action)
-    env.render()
+  environment = TeoGymEnv(renders=False, isDiscrete=False)
+  env = SubprocVecEnv([lambda: environment])  # The algorithms require a vectorized environment to run
+
+  model = PPO2(MlpPolicy, env, verbose=1,
+               n_steps=512,
+               tensorboard_log="log/")
+  model.learn(total_timesteps=int(50e2))
+
+  model.save("Mlp_PP02_walking")
 
 
 if __name__ == "__main__":
