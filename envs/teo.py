@@ -8,38 +8,24 @@ import copy
 import math
 import pybullet_data
 
+JOINT_IDS = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,24,25,26,27,28]
+USELESS_JOINTS = [2,3, 8,9, 14,15] # head and wrist, not usefull for balance
+VALID_JOINT_IDS = [id for id in JOINT_IDS if id not in USELESS_JOINTS]
 
 class TEO:
 
   def __init__(self, urdfRootPath=pybullet_data.getDataPath(), timeStep=0.01):
     self.urdfRootPath = urdfRootPath
     self.timeStep = timeStep
-    self.useInverseKinematics = 1
-    self.useSimulation = 1
-    self.useOrientation = 1
 
-    #lower limits for null space
-    self.ll = [-.967, -2, -2.96, 0.19, -2.96, -2.09, -3.05]
-    #upper limits for null space
-    self.ul = [.967, 2, 2.96, 2.29, 2.96, 2.09, 3.05]
-    #joint ranges for null space
-    self.jr = [5.8, 4, 5.8, 4, 5.8, 4, 6]
-    #restposes for null space
-    self.rp = [0, 0, 0, 0.5 * math.pi, 0, -math.pi * 0.5 * 0.66, 0]
-    #joint damping coefficents
-    self.jd = [
-        0.00001, 0.00001, 0.00001, 0.00001, 0.00001, 0.00001, 0.00001, 0.00001, 0.00001, 0.00001,
-        0.00001, 0.00001, 0.00001, 0.00001
-    ]
     self.reset()
 
   def reset(self):
 
     # measured at root waist
     teoStartOrientation = p.getQuaternionFromEuler([0,0,0])
-    teoStartPosition = [0,0,0.820932]
+    teoStartPosition = [0,0,0.851]
     self.teoUid = p.loadURDF(os.path.join(self.urdfRootPath, "TEO.urdf"), teoStartPosition ,teoStartOrientation)
-
     self.numJoints = p.getNumJoints(self.teoUid)
     
 
@@ -67,7 +53,7 @@ class TEO:
 
 
     # set motor names and indices
-    for i in self.jointIndices:
+    for i in VALID_JOINT_IDS:#self.jointIndices:
       jointInfo = p.getJointInfo(self.teoUid, i)
       qIndex = jointInfo[3]
       if qIndex > -1:
@@ -90,11 +76,14 @@ class TEO:
     observation = []
 
     linear, angular = p.getBaseVelocity(self.teoUid)
-
-    p.getBaseVelocity
+    joint_states = p.getJointStates(self.teoUid, VALID_JOINT_IDS)
+    joint_positions = [joint_state[0] for joint_state in joint_states]
+    joint_velocities = [joint_state[1] for joint_state in joint_states]
 
     observation.extend(list(linear))
     observation.extend(list(angular))
+    observation.extend(list(joint_positions))
+    observation.extend(list(joint_velocities))
 
     return observation
 

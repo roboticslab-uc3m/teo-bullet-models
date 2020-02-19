@@ -4,6 +4,7 @@ parentdir = os.path.dirname(currentdir)
 
 import math
 import pickle
+import json
 import gym
 from gym import spaces
 from gym.utils import seeding
@@ -20,7 +21,9 @@ largeValObservation = 100
 RENDER_HEIGHT = 720
 RENDER_WIDTH = 960
 
-
+JOINT_IDS = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,24,25,26,27,28]
+USELESS_JOINTS = [2,3, 8,9, 14,15] # head and wrist, not usefull for balance
+VALID_JOINT_IDS = [id for id in JOINT_IDS if id not in USELESS_JOINTS]
 
 class TeoGymEnv(gym.Env):
   metadata = {'render.modes': ['human', 'rgb_array'], 'video.frames_per_second': 30}
@@ -30,14 +33,13 @@ class TeoGymEnv(gym.Env):
                isEnableSelfCollision=True,
                renders=False,
                isDiscrete=False,
-               maxSteps=1000):
+               maxSteps=int(512*2000)):
 
     # Simulation parameters
     self._isDiscrete = isDiscrete
     self._timeStep = 1. / 240.
     self._urdfRoot = urdfRoot
     self._actionRepeat = actionRepeat
-    self._isEnableSelfCollision = isEnableSelfCollision
     self._observation = []
     self._envStepCounter = 0
     self._renders = renders
@@ -49,6 +51,7 @@ class TeoGymEnv(gym.Env):
     self._cam_yaw = 30
     self._cam_pitch = -40
 
+    self._prev_x = 0
 
     # Select Physics servers (Normally p.DIRECT, meaning running locally with no gui)
     self._p = p
@@ -73,19 +76,24 @@ class TeoGymEnv(gym.Env):
     else:
       action_dim = 28
 
-      with open ('action_lows', 'rb') as fp:
-        action_lows = pickle.load(fp)
-      with open ('action_highs', 'rb') as fp:
-        action_highs = pickle.load(fp)
+      #with open ('action_lows', 'rb') as fp:
+      #  action_lows = pickle.load(fp)
+      #with open ('action_highs', 'rb') as fp:
+      #  action_highs = pickle.load(fp)
+      action_highs = []
+      action_lows  = []
+      with open('action_limits.json', 'rb') as fp:
+        action_limits = json.load(fp)
+
+      for i in VALID_JOINT_IDS:
+        action_highs.append(action_limits[str(i)]['human']['max']) 
+        action_lows.append(action_limits[str(i)]['human']['min']) 
 
       self.action_space = spaces.Box(low=np.array(action_lows), high=np.array(action_highs), dtype=np.float32)
 
     self.observation_space = spaces.Box(-observation_high, observation_high)
     self.viewer = None
-
-    self.observation_space = spaces.Box(-observation_high, observation_high)
-    self.viewer = None
-
+ 
 
 
   def reset(self):
@@ -101,7 +109,7 @@ class TeoGymEnv(gym.Env):
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
     p.setPhysicsEngineParameter(numSolverIterations=150)
     p.setTimeStep(self._timeStep)
-    p.setGravity(0, 0, -10)
+    p.setGravity(0, 0, -9.79983)
 
     p.loadURDF("plane.urdf")
 
@@ -115,7 +123,10 @@ class TeoGymEnv(gym.Env):
 
   
   def __del__(self):
-    p.disconnect()
+    try:
+      p.disconnect()
+    except p.error:
+      pass
 
   # randomness for better generalization
   def seed(self, seed=None):
@@ -141,7 +152,7 @@ class TeoGymEnv(gym.Env):
 
 
   def step2(self, action):
-    # actions may spann miltiple timesteps
+    # actions may span miltiple timesteps
     for i in range(self._actionRepeat):
       self._teo.applyAction(action)
       p.stepSimulation()
@@ -158,14 +169,17 @@ class TeoGymEnv(gym.Env):
     #print(self._envStepCounter)
 
     done = self._termination()
-    npaction = np.array(
-        [action[i] for i in [4,5,6,7,8,9,10,11,12,13,14,15]]
-    )  # penalize arm movement to prevent flailing
- 
-    actionCost = np.linalg.norm(npaction) * 10. + (0.820932-self._p.getBasePositionAndOrientation(self._teo.teoUid)[0][2])*100
+
+    joint_states = p.getJointStates(self._teo.teoUid, JOINT_IDS)
+    joint_torques = [joint_state[-1] for joint_state in joint_states]
+
+
+    actionCost = np.absolute(np.array(joint_torques))
     #print("actionCost")
     #print(actionCost)
-    reward = self._reward() - actionCost
+
+    reward = self._reward() - actionCost.sum()/5000
+      
     #print("reward")
     #print(reward)
 
@@ -210,12 +224,8 @@ class TeoGymEnv(gym.Env):
 
 
   def _reward(self):
-
     #rewards is distance in x traveled
-
-    reward = -1000
-    reward = reward + p.getBasePositionAndOrientation(self._teo.teoUid)[0][0]*1000
-
+    reward = p.getBasePositionAndOrientation(self._teo.teoUid)[0][0]
     return reward
 
   if parse_version(gym.__version__) < parse_version('0.9.6'):
