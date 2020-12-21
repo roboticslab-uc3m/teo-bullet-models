@@ -28,7 +28,7 @@ VALID_JOINT_IDS = [id for id in JOINT_IDS if id not in USELESS_JOINTS]
 class TeoGymEnv(gym.Env):
   metadata = {'render.modes': ['human', 'rgb_array'], 'video.frames_per_second': 30}
   def __init__(self,
-               urdfRoot=os.path.join(parentdir,"bullet","teo"),
+               urdfRoot=os.path.join(parentdir,"bullet"),
                actionRepeat=1,
                isEnableSelfCollision=True,
                renders=False,
