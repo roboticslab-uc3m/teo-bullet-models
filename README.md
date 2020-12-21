@@ -68,4 +68,4 @@ Examples of jupyter notebooks are inside the `/notebooks` folder.
 ## Posting Issues
 
 1. Read [CONTRIBUTING.md](CONTRIBUTING.md)
-2. [Post an issue / Feature request / Specific documentation request](https://github.com/roboticslab-uc3m/teo-openrave-models/issues)
+2. [Post an issue / Feature request / Specific documentation request](https://github.com/roboticslab-uc3m/teo-bullet-models/issues)
