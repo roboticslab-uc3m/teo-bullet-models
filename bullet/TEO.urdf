@@ -205,14 +205,14 @@
     <child link="waist_yaw_link"/>
     <origin rpy="0 0 0" xyz="0.0 0 0.1932"/>
     <axis xyz="0 0 1"/>
-    <limit effort="30.0" lower="-0.785398163397" upper="0.785398163397" velocity="3.0"/>
+    <limit effort="30.0" lower="-1.0349802464" upper="0.8080874437" velocity="3.0"/>
   </joint>
   <joint name="waist_pitch" type="revolute">
     <parent link="waist_yaw_link"/>
     <child link="waist_pitch_link"/>
     <origin rpy="0 0 0" xyz="-0.0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit effort="30.0" lower="-0.174532925199" upper="0.174532925199" velocity="3.0"/>
+    <limit effort="30.0" lower="-1.5777776438" upper="0.1762782545" velocity="3.0"/>
   </joint>
   <transmission name="waist_yaw_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -676,16 +676,16 @@
     <parent link="waist"/>
     <child link="l_hip_yaw_link"/>
     <origin rpy="0 0 0" xyz="0 0.146 -0.092"/>
-    <axis xyz="0 0 1.0"/>
-    <limit effort="45.0" lower="-1.57079632679" upper="1.57079632679" velocity="4.0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="45.0" lower="-0.4869468613" upper="0.5724679947" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="l_hip_roll" type="revolute">
     <parent link="l_hip_yaw_link"/>
     <child link="l_hip_roll_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <axis xyz="-1 0 0"/>
-    <limit effort="65.0" lower="-0.349065850399" upper="0.349065850399" velocity="4.0"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="65.0" lower="-0.2181661565" upper="0.2478367538" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="l_hip_pitch" type="revolute">
@@ -693,7 +693,7 @@
     <child link="l_femur_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit effort="60.0" lower="-0.523598775598" upper="0.785398163397" velocity="4.0"/>
+    <limit effort="60.0" lower="-0.5515240436" upper="0.7382742736" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="l_knee_pitch" type="revolute">
@@ -701,7 +701,7 @@
     <child link="l_tibia_link"/>
     <origin rpy="0 0 0" xyz="0 0 -0.33"/>
     <axis xyz="0 1 0"/>
-    <limit effort="140.0" lower="-0.0872664625997" upper="1.3962634016" velocity="4.0"/>
+    <limit effort="140.0" lower="-1.0698868315" upper="1.4381513036" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="l_ankle_pitch" type="revolute">
@@ -709,21 +709,21 @@
     <child link="l_ankle_pitch_link"/>
     <origin rpy="0 0 0" xyz="0 -0.0175 -0.3"/>
     <axis xyz="0 1 0"/>
-    <limit effort="85.0" lower="-0.314159265359" upper="0.349065850399" velocity="4.0"/>
+    <limit effort="85.0" lower="-0.4031710572" upper="0.44331363" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="l_ankle_roll" type="revolute">
     <parent link="l_ankle_pitch_link"/>
     <child link="l_astragalus_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <axis xyz="-1 0 0"/>
-    <limit effort="65.0" lower="-0.436332312999" upper="0.436332312999" velocity="4.0"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="65.0" lower="-0.7417649321" upper="0.3473205211" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="l_sole_joint" type="fixed">
     <parent link="l_astragalus_link"/>
     <child link="l_sole"/>
-    <origin rpy="0 0 0" xyz="0 0 -0.124"/>
+    <origin rpy="0 0 0" xyz="0 0 -0.123005"/>
   </joint>
   <!-- <joint name="${side}_sole_fixed" type="fixed">	    
       <parent link="world"/>    
@@ -794,16 +794,16 @@
     <parent link="waist"/>
     <child link="r_hip_yaw_link"/>
     <origin rpy="0 0 0" xyz="0 -0.146 -0.092"/>
-    <axis xyz="0 0 -1.0"/>
-    <limit effort="45.0" lower="-1.57079632679" upper="1.57079632679" velocity="4.0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="45.0" lower="-0.5724679947" upper="0.4869468613" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="r_hip_roll" type="revolute">
     <parent link="r_hip_yaw_link"/>
     <child link="r_hip_roll_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <axis xyz="-1 0 0"/>
-    <limit effort="65.0" lower="-0.349065850399" upper="0.349065850399" velocity="4.0"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="65.0" lower="-0.2478367538" upper="0.2181661565" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="r_hip_pitch" type="revolute">
@@ -811,7 +811,7 @@
     <child link="r_femur_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit effort="60.0" lower="-0.523598775598" upper="0.785398163397" velocity="4.0"/>
+    <limit effort="60.0" lower="-0.5515240436" upper="0.7382742736" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="r_knee_pitch" type="revolute">
@@ -819,7 +819,7 @@
     <child link="r_tibia_link"/>
     <origin rpy="0 0 0" xyz="0 0 -0.33"/>
     <axis xyz="0 1 0"/>
-    <limit effort="140.0" lower="-0.0872664625997" upper="1.3962634016" velocity="4.0"/>
+    <limit effort="140.0" lower="-1.0698868315" upper="1.4381513036" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="r_ankle_pitch" type="revolute">
@@ -827,21 +827,21 @@
     <child link="r_ankle_pitch_link"/>
     <origin rpy="0 0 0" xyz="0 0.0175 -0.3"/>
     <axis xyz="0 1 0"/>
-    <limit effort="85.0" lower="-0.314159265359" upper="0.349065850399" velocity="4.0"/>
+    <limit effort="85.0" lower="-0.4031710572" upper="0.44331363" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="r_ankle_roll" type="revolute">
     <parent link="r_ankle_pitch_link"/>
     <child link="r_astragalus_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <axis xyz="-1 0 0"/>
-    <limit effort="65.0" lower="-0.436332312999" upper="0.436332312999" velocity="4.0"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="65.0" lower="-0.3473205211" upper="0.7417649321" velocity="4.0"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="r_sole_joint" type="fixed">
     <parent link="r_astragalus_link"/>
     <child link="r_sole"/>
-    <origin rpy="0 0 0" xyz="0 0 -0.124"/>
+    <origin rpy="0 0 0" xyz="0 0 -0.123005"/>
   </joint>
   <!-- <joint name="${side}_sole_fixed" type="fixed">	    
       <parent link="world"/>    
@@ -1102,7 +1102,7 @@
       <geometry>
         <mesh filename="package://teo_description/meshes/arms/l_wrist_sensorFT.stl"/>
       </geometry>
-      <material name="teoGray"/>
+      <material name="teoBlue"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 -0.056"/>
@@ -1302,7 +1302,7 @@
       <geometry>
         <mesh filename="package://teo_description/meshes/arms/r_wrist_sensorFT.stl"/>
       </geometry>
-      <material name="teoGray"/>
+      <material name="teoBlue"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 -0.056"/>
@@ -1342,7 +1342,7 @@
     <parent link="l_shoulder_roll_link"/>
     <child link="l_shoulder_yaw_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <axis xyz="0 0 -1"/>
+    <axis xyz="0 0 1"/>
     <limit effort="30.0" lower="-1.308996939" upper="0.174532925199" velocity="3.0"/>
   </joint>
   <joint name="l_elbow_pitch" type="revolute">
@@ -1356,7 +1356,7 @@
     <parent link="l_elbow_pitch_link"/>
     <child link="l_wrist_yaw_link"/>
     <origin rpy="0 0 0" xyz="0 0 -0.202"/>
-    <axis xyz="0 0 -1"/>
+    <axis xyz="0 0 1"/>
     <limit effort="30.0" lower="-1.57079632679" upper="1.57079632679" velocity="3.0"/>
   </joint>
   <joint name="l_wrist_pitch" type="revolute">
@@ -1430,7 +1430,7 @@
     <parent link="waist_pitch_link"/>
     <child link="r_shoulder_pitch_link"/>
     <origin rpy="0 0 0" xyz="-0.0 -0.34692 0.305"/>
-    <axis xyz="0 -1.0 0"/>
+    <axis xyz="0 1 0"/>
     <limit effort="30.0" lower="-0.785398163397" upper="1.2217304764" velocity="3.0"/>
   </joint>
   <joint name="r_shoulder_roll" type="revolute">
@@ -1444,7 +1444,7 @@
     <parent link="r_shoulder_roll_link"/>
     <child link="r_shoulder_yaw_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <axis xyz="0 0 -1"/>
+    <axis xyz="0 0 1"/>
     <limit effort="30.0" lower="-0.174532925199" upper="1.308996939" velocity="3.0"/>
   </joint>
   <joint name="r_elbow_pitch" type="revolute">
@@ -1465,7 +1465,7 @@
     <parent link="r_wrist_yaw_link"/>
     <child link="r_wrist_pitch_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <axis xyz="0 -1.0 0"/>
+    <axis xyz="0 1 0"/>
     <limit effort="30.0" lower="-0.174532925199" upper="1.74532925199" velocity="3.0"/>
   </joint>
   <transmission name="r_shoulder_pitch_trans">

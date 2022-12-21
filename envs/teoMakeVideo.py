@@ -38,9 +38,16 @@ def main():
 
   obs = env.reset()
   for i in range(video_length+1):
+    t0 = time.time()
     action, _states = model.predict(obs)
+    t1 = time.time()
     obs, rewards, dones, info = env.step(action)
+    t2 = time.time()
     env.render()
+    t3 = time.time()
+    print("Prediction = {:.3}".format(t1-t0))
+    print("Simulation step = {:.3}".format(t2-t1))
+    print("Render = {:.3}".format(t3-t2))
   env.close()
 
 if __name__ == "__main__":

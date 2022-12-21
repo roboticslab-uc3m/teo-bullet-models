@@ -12,3 +12,5 @@ envs/__pycache__*
 *.pyc
 
 .ipynb_checkpoints
+envs/log*
+envs/*.zip

@@ -9,7 +9,7 @@ import math
 import pybullet_data
 
 JOINT_IDS = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,24,25,26,27,28]
-USELESS_JOINTS = [2,3, 8,9, 14,15] # head and wrist, not usefull for balance
+USELESS_JOINTS = [2,3, 8,9, 14,15] # head and wrists, not usefull for balance
 VALID_JOINT_IDS = [id for id in JOINT_IDS if id not in USELESS_JOINTS]
 
 class TEO:
